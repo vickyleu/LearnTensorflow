@@ -34,17 +34,14 @@ def load_text_hub():
     model.summary()
 
     model.compile(optimizer='adam',
-                  loss='binary_crossentropy',
+                  loss=tf.keras.losses.BinaryCrossentropy(from_logits=True),
                   metrics=['accuracy'])
-    # model.compile(optimizer='adam',
-    #               loss=tf.keras.losses.BinaryCrossentropy(from_logits=True),
-    #               metrics=['accuracy'])
 
     history = model.fit(train_data.shuffle(10000).batch(512),
                         epochs=20,
                         validation_data=validation_data.batch(512),
                         verbose=1)
-
+    print(history)
     results = model.evaluate(test_data.batch(512), verbose=2)
 
     for name, value in zip(model.metrics_names, results):
